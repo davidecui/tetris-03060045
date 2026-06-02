@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tetris-web
+  labels:
+    app.kubernetes.io/name: tetris-web
+    app.kubernetes.io/instance: tetris-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tetris-web
+      app.kubernetes.io/instance: tetris-web
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tetris-web
+        app.kubernetes.io/instance: tetris-web
+    spec:
+      containers:
+        - name: tetris-web
+          image: tetris-web:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

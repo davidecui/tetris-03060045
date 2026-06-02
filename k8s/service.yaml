@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tetris-web
+  labels:
+    app.kubernetes.io/name: tetris-web
+    app.kubernetes.io/instance: tetris-web
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: tetris-web
+    app.kubernetes.io/instance: tetris-web
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+      name: http

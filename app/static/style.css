@@ -1,0 +1,289 @@
+/* ===== CSS Custom Properties ===== */
+:root {
+  --bg-primary: #0a0a1a;
+  --bg-secondary: #12122a;
+  --bg-glass: rgba(255, 255, 255, 0.04);
+  --bg-glass-hover: rgba(255, 255, 255, 0.08);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --text-primary: #e8e8f0;
+  --text-secondary: #8888aa;
+  --text-accent: #a78bfa;
+  --accent-purple: #7c3aed;
+  --accent-cyan: #22d3ee;
+  --accent-pink: #f472b6;
+  --glow-purple: rgba(124, 58, 237, 0.35);
+  --glow-cyan: rgba(34, 211, 238, 0.25);
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Orbitron', monospace;
+  --radius: 12px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --cell-size: 30px;
+}
+
+/* ===== Reset ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, var(--glow-purple), transparent 60%),
+    radial-gradient(ellipse at 80% 50%, var(--glow-cyan), transparent 60%);
+}
+
+/* ===== App Shell ===== */
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  max-height: 100vh;
+}
+
+/* ===== Header ===== */
+#header {
+  text-align: center;
+}
+
+#title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.4rem;
+  letter-spacing: 0.25em;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s ease infinite;
+  text-shadow: none;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* ===== Glass Panel ===== */
+.glass-panel {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 16px;
+  transition: background var(--transition);
+}
+
+.glass-panel:hover {
+  background: var(--bg-glass-hover);
+}
+
+.glass-panel h2 {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* ===== Game Area Layout ===== */
+#game-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* ===== Hold Panel ===== */
+#hold-panel {
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#hold-canvas {
+  display: block;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Board Wrapper ===== */
+#board-wrapper {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow:
+    0 0 40px var(--glow-purple),
+    0 0 80px rgba(124, 58, 237, 0.12),
+    inset 0 0 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-glass);
+}
+
+#game-canvas {
+  display: block;
+  background: var(--bg-secondary);
+}
+
+/* ===== Info Panel ===== */
+#info-panel {
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.info-section {
+  text-align: center;
+}
+
+#next-canvas {
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--accent-cyan);
+  text-shadow: 0 0 12px var(--glow-cyan);
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.stat-value.bump {
+  transform: scale(1.25);
+  color: var(--accent-pink);
+}
+
+/* ===== Overlays ===== */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(10, 10, 26, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 10;
+  animation: fade-in 0.3s ease;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.overlay-icon {
+  font-size: 3rem;
+}
+
+.overlay-content p {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.6rem;
+  letter-spacing: 0.15em;
+  color: var(--text-primary);
+}
+
+.overlay-content small {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.overlay-content small kbd {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+}
+
+#final-score-display {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--accent-cyan);
+  text-shadow: 0 0 10px var(--glow-cyan);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ===== Controls Bar ===== */
+#controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 20px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+kbd {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+/* ===== Row Clear Flash ===== */
+@keyframes row-flash {
+  0%   { background: rgba(34, 211, 238, 0.6); }
+  100% { background: transparent; }
+}
+
+/* ===== Responsive ===== */
+@media (max-height: 780px) {
+  :root { --cell-size: 24px; }
+  #game-canvas { width: 240px; height: 480px; }
+  #title { font-size: 1.8rem; }
+  .stat-value { font-size: 1.2rem; }
+  #hold-panel, #info-panel { width: 120px; }
+  #hold-canvas, #next-canvas { width: 100px; height: 100px; }
+}
+
+@media (max-width: 640px) {
+  #game-area { gap: 10px; }
+  #hold-panel { display: none; }
+  #info-panel { width: 110px; padding: 10px; }
+  #app { padding: 8px; gap: 8px; }
+}

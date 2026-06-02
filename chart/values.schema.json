@@ -1,0 +1,203 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tetris Web Helm Values",
+  "description": "Configuration schema for the Tetris Web Helm chart. Designed for Krateo blueprint self-service consumption.",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "Replica Count",
+      "description": "Number of pod replicas to run.",
+      "default": 1,
+      "minimum": 1
+    },
+    "nameOverride": {
+      "type": "string",
+      "title": "Name Override",
+      "description": "Override the chart name used in resource names. Leave empty to use the chart name.",
+      "default": ""
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Full Name Override",
+      "description": "Completely override the generated resource name. Leave empty for default naming.",
+      "default": ""
+    },
+    "image": {
+      "type": "object",
+      "title": "Container Image",
+      "description": "Settings for the application container image.",
+      "properties": {
+        "repository": {
+          "type": "string",
+          "title": "Image Repository",
+          "description": "Container image repository (e.g. ghcr.io/org/tetris-web).",
+          "default": "tetris-web"
+        },
+        "tag": {
+          "type": "string",
+          "title": "Image Tag",
+          "description": "Container image tag.",
+          "default": "latest"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "Image Pull Policy",
+          "description": "Kubernetes image pull policy.",
+          "default": "IfNotPresent",
+          "enum": ["Always", "IfNotPresent", "Never"]
+        }
+      },
+      "required": ["repository", "tag"]
+    },
+    "service": {
+      "type": "object",
+      "title": "Service",
+      "description": "Kubernetes Service configuration.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "Service Type",
+          "description": "Kubernetes Service type.",
+          "default": "ClusterIP",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"]
+        },
+        "port": {
+          "type": "integer",
+          "title": "Service Port",
+          "description": "Port exposed by the Service.",
+          "default": 80,
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "targetPort": {
+          "type": "integer",
+          "title": "Target Port",
+          "description": "Port on the container that the Service routes to.",
+          "default": 8080,
+          "minimum": 1,
+          "maximum": 65535
+        }
+      },
+      "required": ["type", "port"]
+    },
+    "resources": {
+      "type": "object",
+      "title": "Resource Limits",
+      "description": "CPU and memory resource requests and limits for the application container.",
+      "properties": {
+        "requests": {
+          "type": "object",
+          "title": "Resource Requests",
+          "description": "Minimum resources guaranteed to the container.",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU Request",
+              "description": "CPU request (e.g. 50m, 0.5).",
+              "default": "50m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "Memory Request",
+              "description": "Memory request (e.g. 64Mi, 128Mi).",
+              "default": "64Mi"
+            }
+          }
+        },
+        "limits": {
+          "type": "object",
+          "title": "Resource Limits",
+          "description": "Maximum resources the container may consume.",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU Limit",
+              "description": "CPU limit (e.g. 200m, 1).",
+              "default": "200m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "Memory Limit",
+              "description": "Memory limit (e.g. 128Mi, 256Mi).",
+              "default": "128Mi"
+            }
+          }
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "title": "Ingress",
+      "description": "Ingress configuration for external HTTP access.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enable Ingress",
+          "description": "Set to true to create an Ingress resource.",
+          "default": false
+        },
+        "className": {
+          "type": "string",
+          "title": "Ingress Class Name",
+          "description": "Ingress class to use (e.g. nginx, traefik). Leave empty for cluster default.",
+          "default": ""
+        },
+        "hosts": {
+          "type": "array",
+          "title": "Ingress Hosts",
+          "description": "List of hosts and paths for the Ingress resource.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string",
+                "title": "Hostname",
+                "description": "Fully qualified domain name for this Ingress rule."
+              },
+              "paths": {
+                "type": "array",
+                "title": "Paths",
+                "description": "HTTP paths to route to the service.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "title": "Path",
+                      "description": "URL path prefix.",
+                      "default": "/"
+                    },
+                    "pathType": {
+                      "type": "string",
+                      "title": "Path Type",
+                      "description": "Kubernetes path matching type.",
+                      "default": "Prefix",
+                      "enum": ["Prefix", "Exact", "ImplementationSpecific"]
+                    }
+                  },
+                  "required": ["path", "pathType"]
+                }
+              }
+            },
+            "required": ["host", "paths"]
+          }
+        }
+      }
+    },
+    "app": {
+      "type": "object",
+      "title": "Application Settings",
+      "description": "Application-level configuration.",
+      "properties": {
+        "healthPath": {
+          "type": "string",
+          "title": "Health Check Path",
+          "description": "HTTP path used for liveness and readiness probes.",
+          "default": "/health"
+        }
+      }
+    }
+  },
+  "required": ["replicaCount", "image", "service"]
+}

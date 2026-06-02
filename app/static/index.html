@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A classic Tetris game playable in the browser. Move, rotate, and drop tetrominoes to clear lines and score points." />
+  <title>Tetris Web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div id="app">
+    <header id="header">
+      <h1 id="title">TETRIS</h1>
+    </header>
+
+    <main id="game-area">
+      <!-- Left panel: hold piece -->
+      <aside id="hold-panel" class="glass-panel">
+        <h2>HOLD</h2>
+        <canvas id="hold-canvas" width="120" height="120"></canvas>
+      </aside>
+
+      <!-- Center: game board -->
+      <div id="board-wrapper">
+        <canvas id="game-canvas" width="300" height="600"></canvas>
+        <!-- Overlays -->
+        <div id="overlay-pause" class="overlay hidden">
+          <div class="overlay-content">
+            <span class="overlay-icon">⏸</span>
+            <p>PAUSED</p>
+            <small>Press <kbd>P</kbd> to resume</small>
+          </div>
+        </div>
+        <div id="overlay-gameover" class="overlay hidden">
+          <div class="overlay-content">
+            <span class="overlay-icon">💀</span>
+            <p>GAME OVER</p>
+            <div id="final-score-display"></div>
+            <small>Press <kbd>R</kbd> to restart</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right panel: next piece + stats -->
+      <aside id="info-panel" class="glass-panel">
+        <div class="info-section">
+          <h2>NEXT</h2>
+          <canvas id="next-canvas" width="120" height="120"></canvas>
+        </div>
+        <div class="info-section">
+          <h2>SCORE</h2>
+          <div id="score" class="stat-value">0</div>
+        </div>
+        <div class="info-section">
+          <h2>LEVEL</h2>
+          <div id="level" class="stat-value">1</div>
+        </div>
+        <div class="info-section">
+          <h2>LINES</h2>
+          <div id="lines" class="stat-value">0</div>
+        </div>
+      </aside>
+    </main>
+
+    <footer id="controls-bar">
+      <div class="control-group">
+        <kbd>←</kbd><kbd>→</kbd> Move
+      </div>
+      <div class="control-group">
+        <kbd>↓</kbd> Soft drop
+      </div>
+      <div class="control-group">
+        <kbd>↑</kbd> / <kbd>Space</kbd> Rotate
+      </div>
+      <div class="control-group">
+        <kbd>C</kbd> Hold
+      </div>
+      <div class="control-group">
+        <kbd>P</kbd> Pause
+      </div>
+      <div class="control-group">
+        <kbd>R</kbd> Restart
+      </div>
+    </footer>
+  </div>
+
+  <script src="/static/tetris.js"></script>
+</body>
+</html>
